@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#submit").click(function() {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var age = $("#age").val();
+                var gender = $("gender").val();
+                var data = '{ "username":"' + username + '","password":"' + password + '", "}';
+                alert(data);
+                $.ajax({
+                    url: "/user/add",
+                    data: data,
+                    contentType: "application/json",
+                    type: "post",
+                    success: function(data) {
+                        alert(data);
+                    }
+                });
+            });
+            $.ajax({
+                url: "/user/list",
+                type: "post",
+                success: function(data) {
+                    var str="";
+                    $("#body").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        str = "<tr>" +
+                                "<td>" + data[i].username + "</td>" +
+                                "<td>" + data[i].password + "</td>" +
+                                "<td>" + data[i].age + "</td>" +
+                                "<td>" + data[i].gender + "</td>" +
+                                "<td><input type='checkbox' value='11'>11</input></td>";
+                        $("#body").append(str);
+                    }
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <form method="post" action="/user/save">
+        username: <input id="username" type="text" name="username"/>
+        password: <input id="password" type="password" name="password"/>
+        age: <input id="age" type="text" name="age"/>
+        gender: <input id="gender" type="text" name="gender"/>
+        <input id="submit" type="button" value="提交"/>
+    </form>
+    <div id="div">
+        <table>
+            <thead>
+                <th>username</th>
+                <th>password</th>
+                <th>age</th>
+                <th>gender</th>
+            </thead>
+            <tbody id="body">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
