@@ -15,32 +15,29 @@ import java.net.Socket;
 public class IOServer {
 
     public static void main(String[] args) throws Exception {
-        ServerSocket server = new ServerSocket(8000);
+        ServerSocket serverSocket = new ServerSocket(8000);
 
         new Thread(() -> {
-            while (true) {
-                try {
-                    Socket socket = server.accept();
+            try {
+                while (true) {
+                    Socket socket = serverSocket.accept();
 
                     new Thread(() -> {
                         try {
+                            InputStream is = socket.getInputStream();
                             byte[] bytes = new byte[64];
-                            InputStream inputStream = socket.getInputStream();
-                            while (true) {
-                                int length;
-                                while ((length = inputStream.read(bytes)) != -1) {
-                                    System.out.println(new String(bytes, 0, length));
-                                }
+                            int len;
+                            while ((len = is.read(bytes)) != -1) {
+                                System.out.println(new String(bytes, 0, len));
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }).start();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }).start();
     }
-
 }
