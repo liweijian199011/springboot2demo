@@ -19,6 +19,8 @@ public class IOServer {
 
         new Thread(() -> {
             try {
+                // 这一层的循环是用来不停的接收socket连接的。循环里面的accept方法是一个阻塞方法，用来接收socket连接
+                // 每一次循环就可以接收一个socket连接。
                 while (true) {
                     // accept方法一定要放在while循环里面，因为accept方法是一个阻塞方法
                     // 一个客户端连接之后，才会执行accept方法后面的逻辑。一个客户端连接连接成功之后
